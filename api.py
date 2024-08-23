@@ -1,5 +1,6 @@
 import streamlit as st
 import joblib
+import tensorflow as tf
 import tensorflow_hub as hub
 
 # Charger le modèle enregistré

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import joblib
+import tensorflow as tf
 import tensorflow_hub as hub
 
 
