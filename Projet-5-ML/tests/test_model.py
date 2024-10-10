@@ -9,9 +9,9 @@ from sklearn.multiclass import OneVsRestClassifier
 @pytest.fixture(scope="module")
 def load_model():
     # Chargement des modèles et du TF-IDF vectorizer
-    tfidf = joblib.load('tfidf.joblib')
-    classifier = joblib.load('classifier.joblib')
-    mlb = joblib.load('mlb.joblib')
+    tfidf = joblib.load('https://drive.google.com/file/d/13AYA7oPlaDyxoMuq6vG2Mm27riXoTP4f/view?usp=drive_link/tfidf.joblib')
+    classifier = joblib.load('https://drive.google.com/file/d/1vtx6wj3Gdkb1n96dCJcWjaott11wgWX8/view?usp=drive_link/classifier.joblib')
+    mlb = joblib.load('https://drive.google.com/file/d/1iMJwgMA4yRhtbAN09732aqZEsmtBBSBe/view?usp=drive_link/mlb.joblib')
     return tfidf, classifier, mlb
 
 def test_tfidf_transformer(load_model):
