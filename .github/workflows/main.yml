@@ -45,7 +45,7 @@ jobs:
 
       - name: Test generate_tags endpoint
         run: |
-          curl -X POST http://127.0.0.1:8000/generate_tags -d '{"data":"example"}' -H "Content-Type: application/json"
+          curl -X POST http://127.0.0.1:8000/generate_tags -d '{"question":"How do you create a dataframe?"}' -H "Content-Type: application/json"
 
           
       - name: Check if Flask is running
