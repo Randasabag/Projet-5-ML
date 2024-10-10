@@ -36,7 +36,7 @@ jobs:
      
       - name: Set FLASK_APP
         run: |
-          export FLASK_APP=flask_app.py  # Indiquer où est votre application Flask
+          export FLASK_APP=Projet-5-ML/flask_app.py  # Indiquer où est votre application Flask
 
       - name: Start Flask app
         run: |
