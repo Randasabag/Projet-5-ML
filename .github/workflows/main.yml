@@ -41,8 +41,16 @@ jobs:
       - name: Start Flask app
         run: |
           flask --app Projet-5-ML.flask_app run --host=127.0.0.1 --port=8000 &
-          sleep 10  # Attendre que l'application démarre
+          sleep 20  # Attendre que l'application démarre
           
+      - name: Check if Flask is running
+        run: |
+          ps aux | grep flask  # Vérifie si le processus Flask est lancé
+
+      - name: Test Flask availability
+        run: |
+          curl http://127.0.0.1:8000/  # Vérifie si l'application est disponible
+
       - name: Run tests
         run: |
-          pytest Projet-5-ML/tests/  # Exécute tous les tests dans le dossier tests/
+          pytest Projet-5-ML/tests/ --disable-warnings --maxfail=1
