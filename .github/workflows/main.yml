@@ -36,7 +36,7 @@ jobs:
 
       - name: Start Flask app
         run: |
-          nohup python -m flask_app &  # Démarrer votre application Flask en arrière-plan
+          flask run --host=0.0.0.0 --port=8000 &
           sleep 5  # Attendre que l'application démarre
           
       - name: Run tests
