@@ -1,35 +1,69 @@
-import pytest
+from flask import Flask, request, jsonify
 import joblib
+import pickle
+#import tensorflow as tf
 import numpy as np
-from sklearn.exceptions import NotFittedError
-from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.multiclass import OneVsRestClassifier
+import os
 
 
-@pytest.fixture(scope="module")
-def load_model():
-    # Chargement des modèles et du TF-IDF vectorizer
-    tfidf = joblib.load('https://drive.google.com/file/d/13AYA7oPlaDyxoMuq6vG2Mm27riXoTP4f/view?usp=drive_link/tfidf.joblib')
-    classifier = joblib.load('https://drive.google.com/file/d/1vtx6wj3Gdkb1n96dCJcWjaott11wgWX8/view?usp=drive_link/classifier.joblib')
-    mlb = joblib.load('https://drive.google.com/file/d/1iMJwgMA4yRhtbAN09732aqZEsmtBBSBe/view?usp=drive_link/mlb.joblib')
-    return tfidf, classifier, mlb
+app = Flask(__name__)
 
-def test_tfidf_transformer(load_model):
-    tfidf, _, _ = load_model
+print("Flask utilisé")
+
+@app.route("/generate_tags", methods=["POST"])
+def generate_tags():
+
+    my_dir = os.path.dirname(__file__)
+    tfidf_path = os.path.join(my_dir, 'tfidf.joblib')
+    classifier_path = os.path.join(my_dir, 'classifier.joblib')
+    mlb_path = os.path.join(my_dir, 'mlb.joblib')
+
+    # Charger le TfidfVectorizer
+    with open(tfidf_path, 'rb') as file:
+        tfidf = joblib.load(file)
+
+    # Charger le classificateur
+    with open(classifier_path, 'rb') as file1:
+        classifier = joblib.load(file1)
+
+    with open(mlb_path, 'rb') as file2:
+        mlb = joblib.load(file2)  # Charger le MultiLabelBinarizer
     
-    # Tester la transformation de données avec TF-IDF
-    test_text = ["Qu'est-ce que Python ?"]
-    transformed_data = tfidf.transform(test_text)
+    try:
+        # Lire les données JSON de la requête
+        data = request.json
+        question = data.get("question")
+        
+        if not question:
+            return jsonify({"error": "Question is required"}), 400
+        
+        # Vérification du type de la question
+        if not isinstance(question, str):
+            return jsonify({"error": "Question must be a string"}), 400
+        
+        # Prétraitement de la question si nécessaire
+        input_data = (tfidf.transform([question]))  # Modifie ceci selon le format attendu par ton modèle
+        # Faire une prédiction avec le modèle
+        predicted_tags = classifier.predict(input_data)
+        print("Pred",predicted_tags)
 
-    assert transformed_data.shape[0] == 1  # Doit renvoyer 1 ligne
-    assert transformed_data.shape[1] > 0  # Le nombre de caractéristiques doit être > 0
+        # Exemple où tags_list est [['python']]
+        tags_list = mlb.inverse_transform(predicted_tags)
+        print("Tags list:", tags_list)
 
-
-def test_invalid_input_format(load_model):
-    _, classifier, tfidf = load_model
+         # Vérifier si tags_list contient des éléments
+        if not tags_list or not any(tags_list):
+            return jsonify({"tags": []})  # Retourner une liste vide si aucun tag n'est trouvé
     
-    # Essayer de faire une prédiction avec un mauvais format d'entrée
-    with pytest.raises(ValueError):
-        invalid_input = ["Invalid input type"]  # Un texte non transformé
-        classifier.predict(invalid_input)
+        formatted_tags = [f"#{tag}" for tag in tags_list[0]]  # Utiliser [0] pour accéder à la première sous-liste
 
+        # Retourner les tags au format JSON
+        return jsonify({'tags': formatted_tags})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+        
+
+if __name__ == "__main__":
+    app.run()
