@@ -1,7 +1,6 @@
 import pytest
 import joblib
 import numpy as np
-from sklearn.exceptions import NotFittedError
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.multiclass import OneVsRestClassifier
 
