@@ -1,6 +1,7 @@
 # tests/test_app.py
 import pytest
 import requests
+import requests_mock
 
 # Test de l'API externe
 def test_generate_tags_api():
