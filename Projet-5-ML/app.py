@@ -13,7 +13,7 @@ if st.button("Générer des tags"):
 
     cloud_path = "https://randaals.pythonanywhere.com/generate_tags" 
     local_path = 'http://127.0.0.1:8000/generate_tags'
-    response = requests.post(cloud_path, json={"question": question})
+    response = requests.post(local_path, json={"question": question})
 
      # Vérifier le statut de la réponse
     if response.status_code != 200:
