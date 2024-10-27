@@ -7,10 +7,18 @@ from sklearn.multiclass import OneVsRestClassifier
 
 @pytest.fixture(scope="module")
 def load_model():
+
+    import os
+
+    path_to_tfidf = os.path.abspath("tfidf.joblib")
+    print(f"Loading tfidf from: {path_to_tfidf}")
+    with open(path_to_tfidf, 'rb') as f:
+        tfidf = joblib.load(f)
+
     # Chargement des modèles et du TF-IDF vectorizer
-    tfidf = joblib.load('tfidf.joblib')
-    classifier = joblib.load('classifier.joblib')
-    mlb = joblib.load('mlb.joblib')
+    tfidf = joblib.load('Projet-5-ML/tfidf.joblib')
+    classifier = joblib.load('Projet-5-ML/classifier.joblib')
+    mlb = joblib.load('Projet-5-ML/mlb.joblib')
     return tfidf, classifier, mlb
 
 def test_tfidf_transformer(load_model):
