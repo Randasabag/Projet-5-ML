@@ -16,9 +16,9 @@ def load_model():
         tfidf = joblib.load(f)
 
     # Chargement des modèles et du TF-IDF vectorizer
-    tfidf = joblib.load('Projet-5-ML/tfidf.joblib')
-    classifier = joblib.load('Projet-5-ML/classifier.joblib')
-    mlb = joblib.load('Projet-5-ML/mlb.joblib')
+    tfidf = joblib.load('Projet-5-ML/Projet-5-ML/tfidf.joblib')
+    classifier = joblib.load('Projet-5-ML/Projet-5-ML/classifier.joblib')
+    mlb = joblib.load('Projet-5-ML/Projet-5-ML/mlb.joblib')
     return tfidf, classifier, mlb
 
 def test_tfidf_transformer(load_model):
