@@ -15,5 +15,9 @@ Contenu du projet:
 - Un fichier Requirements listant les packages
 - Un fichier app.py
 - Un fichier flask_app.py
+- Un dossier tests avec les test unitaires 
+- Un fichier workflow python-app.yml pour valider les tests
+- Trois notebooks utilisant les méthodes Word2Vec, BERT et USE
+- Les 3 modèles tfidf, classifier et mlb
 - Une note technique
 - Une présentation
